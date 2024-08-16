@@ -10,7 +10,7 @@ async function bootstrap() {
     app.useGlobalFilters(new filters_filter_1.AllExceptionsFilter());
     app.useGlobalPipes(new common_1.ValidationPipe());
     const configService = app.get(config_1.ConfigService);
-    await app.listen(configService.get('PORT'));
+    await app.listen(configService.get("PORT"));
 }
 bootstrap();
 //# sourceMappingURL=main.js.map
