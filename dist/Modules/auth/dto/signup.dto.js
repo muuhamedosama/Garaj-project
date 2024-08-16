@@ -36,8 +36,8 @@ __decorate([
 ], SignUpDto.prototype, "name", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.Matches)(/^.{6,}$/, {
-        message: 'Password must be at least 6 characters long',
+    (0, class_validator_1.Matches)(/^.{8,}$/, {
+        message: 'Password must be at least 8 characters long',
     }),
     __metadata("design:type", String)
 ], SignUpDto.prototype, "password", void 0);

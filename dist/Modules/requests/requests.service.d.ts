@@ -1,7 +1,7 @@
-import { CreateRequestDto } from './dto/create-request.dto';
 import { UpdateRequestDto } from './dto/update-request.dto';
+import { createRequestDto } from './dto/create-request.dto';
 export declare class RequestsService {
-    create(createRequestDto: CreateRequestDto): string;
+    create(createRequestDto: createRequestDto): string;
     findAll(): string;
     findOne(id: number): string;
     update(id: number, updateRequestDto: UpdateRequestDto): string;

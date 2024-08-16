@@ -13,6 +13,8 @@ const mechanics_controller_1 = require("./mechanics.controller");
 const mongoose_1 = require("@nestjs/mongoose");
 const mechanics_schema_1 = require("./mechanics.schema");
 const users_module_1 = require("../users/users.module");
+const jwt_1 = require("@nestjs/jwt");
+const passport_1 = require("@nestjs/passport");
 let MechanicsModule = class MechanicsModule {
 };
 exports.MechanicsModule = MechanicsModule;
@@ -22,10 +24,11 @@ exports.MechanicsModule = MechanicsModule = __decorate([
             mongoose_1.MongooseModule.forFeature([
                 { name: mechanics_schema_1.Mechanic.name, schema: mechanics_schema_1.MechanicSchema },
             ]),
-            users_module_1.UsersModule
+            users_module_1.UsersModule,
+            passport_1.PassportModule
         ],
         controllers: [mechanics_controller_1.MechanicsController],
-        providers: [mechanics_service_1.MechanicsService],
+        providers: [mechanics_service_1.MechanicsService, jwt_1.JwtService],
         exports: [mechanics_service_1.MechanicsService],
     })
 ], MechanicsModule);

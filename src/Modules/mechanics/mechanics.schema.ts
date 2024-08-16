@@ -1,5 +1,5 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, Types } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { HydratedDocument, Types } from "mongoose";
 
 export type mechanicDocument = HydratedDocument<Mechanic>;
 
@@ -29,7 +29,13 @@ export class Mechanic {
   @Prop({ required: true })
   specialization: string[];
 
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  @Prop({})
+  rating: number;
+
+  @Prop({type: Types.ObjectId, ref : "Service"})
+  services: {serviceRef: Types.ObjectId, price: Number }[];
+
+  @Prop({ type: Types.ObjectId, ref: "User", required: true })
   userId: Types.ObjectId;
 }
 

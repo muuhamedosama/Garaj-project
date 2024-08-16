@@ -27,6 +27,10 @@ let MechanicsService = class MechanicsService {
         const createdUser = new this.mechanicModel(user);
         return createdUser.save();
     }
+    update(id, updateMechanicDto) {
+        console.log(updateMechanicDto);
+        return `This action updates a #${id} mechanic`;
+    }
 };
 exports.MechanicsService = MechanicsService;
 exports.MechanicsService = MechanicsService = __decorate([

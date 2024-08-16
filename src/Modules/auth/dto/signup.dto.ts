@@ -24,8 +24,8 @@ export class SignUpDto {
   name: string;
 
   @IsString()
-  @Matches(/^.{6,}$/, {
-    message: 'Password must be at least 6 characters long',
+  @Matches(/^.{8,}$/, {
+    message: 'Password must be at least 8 characters long',
   })
   password: string;
 

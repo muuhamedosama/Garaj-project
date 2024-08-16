@@ -4,9 +4,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { UsersModule } from './Modules/users/users.module';
 import { AuthModule } from './Modules/auth/auth.module';
-import { RequestsModule } from './Modules/requests/requests.module';
-import { QoutesModule } from './Modules/qoutes/qoutes.module';
 import { MechanicsModule } from './Modules/mechanics/mechanics.module';
+import { RequestsModule } from './Modules/requests/requests.module';
+import { ServicesModule } from './Modules/services/services.module';
+import { RolesGuard } from './roles/roles.guard';
+import { JwtAuthGuard } from './Modules/auth/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import { MechanicsModule } from './Modules/mechanics/mechanics.module';
     MechanicsModule,
     AuthModule,
     RequestsModule,
-    QoutesModule,
+    ServicesModule,
   ],
   controllers: [],
   providers: [],

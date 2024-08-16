@@ -12,9 +12,9 @@ const mongoose_1 = require("@nestjs/mongoose");
 const config_1 = require("@nestjs/config");
 const users_module_1 = require("./Modules/users/users.module");
 const auth_module_1 = require("./Modules/auth/auth.module");
-const requests_module_1 = require("./Modules/requests/requests.module");
-const qoutes_module_1 = require("./Modules/qoutes/qoutes.module");
 const mechanics_module_1 = require("./Modules/mechanics/mechanics.module");
+const requests_module_1 = require("./Modules/requests/requests.module");
+const services_module_1 = require("./Modules/services/services.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -34,7 +34,7 @@ exports.AppModule = AppModule = __decorate([
             mechanics_module_1.MechanicsModule,
             auth_module_1.AuthModule,
             requests_module_1.RequestsModule,
-            qoutes_module_1.QoutesModule,
+            services_module_1.ServicesModule,
         ],
         controllers: [],
         providers: [],

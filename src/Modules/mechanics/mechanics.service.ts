@@ -1,8 +1,9 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { Mechanic, mechanicDocument } from './mechanics.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { UsersService } from '../users/users.service';
+import { UpdateMechanicDto } from './dto/update-mechanic.dto';
 
 @Injectable()
 export class MechanicsService {
@@ -24,9 +25,10 @@ export class MechanicsService {
   //   return `This action returns a #${id} mechanic`;
   // }
 
-  // update(id: number, updateMechanicDto: UpdateMechanicDto) {
-  //   return `This action updates a #${id} mechanic`;
-  // }
+  update(id: number, updateMechanicDto: UpdateMechanicDto) {
+    console.log(updateMechanicDto);
+    return `This action updates a #${id} mechanic`;
+  }
 
   // remove(id: number) {
   //   return `This action removes a #${id} mechanic`;

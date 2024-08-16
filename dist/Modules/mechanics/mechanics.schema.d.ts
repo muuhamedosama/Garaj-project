@@ -1,4 +1,4 @@
-import { HydratedDocument, Types } from 'mongoose';
+import { HydratedDocument, Types } from "mongoose";
 export type mechanicDocument = HydratedDocument<Mechanic>;
 export declare class Mechanic {
     businessName: string;
@@ -9,6 +9,11 @@ export declare class Mechanic {
     closingAt: string;
     amenities: string[];
     specialization: string[];
+    rating: number;
+    services: {
+        serviceRef: Types.ObjectId;
+        price: Number;
+    }[];
     userId: Types.ObjectId;
 }
 export declare const MechanicSchema: import("mongoose").Schema<Mechanic, import("mongoose").Model<Mechanic, any, any, any, import("mongoose").Document<unknown, any, Mechanic> & Mechanic & {

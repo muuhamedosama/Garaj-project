@@ -1,6 +1,5 @@
 import {
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -10,6 +9,7 @@ import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
+
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async create(user): Promise<User> {

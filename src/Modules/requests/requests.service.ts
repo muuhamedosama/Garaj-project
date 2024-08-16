@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRequestDto } from './dto/create-request.dto';
 import { UpdateRequestDto } from './dto/update-request.dto';
+import { createRequestDto } from './dto/create-request.dto';
 
 @Injectable()
 export class RequestsService {
-  create(createRequestDto: CreateRequestDto) {
+  create(createRequestDto: createRequestDto) {
     return 'This action adds a new request';
   }
 

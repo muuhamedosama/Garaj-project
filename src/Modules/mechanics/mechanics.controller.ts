@@ -1,9 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { MechanicsService } from './mechanics.service';
-import { CreateMechanicDto } from './dto/create-mechanic.dto';
-import { UpdateMechanicDto } from './dto/update-mechanic.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Request,
+  ForbiddenException,
+} from "@nestjs/common";
+import { MechanicsService } from "./mechanics.service";
+import { UpdateMechanicDto } from "./dto/update-mechanic.dto";
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 
-@Controller('mechanics')
+@Controller("mechanics")
 export class MechanicsController {
   constructor(private readonly mechanicsService: MechanicsService) {}
 
@@ -22,10 +33,24 @@ export class MechanicsController {
   //   return this.mechanicsService.findOne(+id);
   // }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateMechanicDto: UpdateMechanicDto) {
-  //   return this.mechanicsService.update(+id, updateMechanicDto);
-  // }
+  @Patch(":id")
+  async update(
+    @Param("id") id: string,
+    @Body() updateMechanicDto: UpdateMechanicDto,
+    @Request() req: any
+  ) {
+    const user = req.user;
+
+    if (user.userType !== "admin" && "rating" in updateMechanicDto) {
+      throw new ForbiddenException();
+    }
+    const updatedMechanic = await this.mechanicsService.update(
+      +id,
+      updateMechanicDto
+    );
+
+    return { message: "Mechanic updated successfully", data: updatedMechanic };
+  }
 
   // @Delete(':id')
   // remove(@Param('id') id: string) {

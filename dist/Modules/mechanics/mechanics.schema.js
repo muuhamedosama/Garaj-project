@@ -48,7 +48,15 @@ __decorate([
     __metadata("design:type", Array)
 ], Mechanic.prototype, "specialization", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: 'User', required: true }),
+    (0, mongoose_1.Prop)({}),
+    __metadata("design:type", Number)
+], Mechanic.prototype, "rating", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "Service" }),
+    __metadata("design:type", Array)
+], Mechanic.prototype, "services", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "User", required: true }),
     __metadata("design:type", mongoose_2.Types.ObjectId)
 ], Mechanic.prototype, "userId", void 0);
 exports.Mechanic = Mechanic = __decorate([
