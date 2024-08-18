@@ -9,36 +9,41 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RolesGuard = void 0;
+exports.AuthGuard = void 0;
 const common_1 = require("@nestjs/common");
+const config_1 = require("@nestjs/config");
 const jwt_1 = require("@nestjs/jwt");
-let RolesGuard = class RolesGuard {
-    constructor(jwtService) {
+let AuthGuard = class AuthGuard {
+    constructor(jwtService, configService) {
         this.jwtService = jwtService;
+        this.configService = configService;
     }
     async canActivate(context) {
         const request = context.switchToHttp().getRequest();
-        const authorizationHeader = request.headers.authorization;
-        if (!authorizationHeader) {
-            throw new common_1.ForbiddenException('No token provided');
-        }
-        const token = authorizationHeader.split(' ')[1];
+        const token = this.extractTokenFromHeader(request);
         if (!token) {
-            throw new common_1.ForbiddenException('Invalid token format');
+            throw new common_1.UnauthorizedException();
         }
         try {
-            const decodedToken = this.jwtService.verify(token);
-            request.user = decodedToken;
-            return true;
+            const payload = await this.jwtService.verifyAsync(token, {
+                secret: this.configService.get("JWT_SECRET"),
+            });
+            request["user"] = payload;
         }
-        catch (error) {
-            throw new common_1.ForbiddenException('Invalid token');
+        catch {
+            throw new common_1.UnauthorizedException();
         }
+        return true;
+    }
+    extractTokenFromHeader(request) {
+        const [type, token] = request.headers.authorization?.split(" ") ?? [];
+        return type === "Bearer" ? token : undefined;
     }
 };
-exports.RolesGuard = RolesGuard;
-exports.RolesGuard = RolesGuard = __decorate([
+exports.AuthGuard = AuthGuard;
+exports.AuthGuard = AuthGuard = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [jwt_1.JwtService])
-], RolesGuard);
-//# sourceMappingURL=roles.guard.js.map
+    __metadata("design:paramtypes", [jwt_1.JwtService,
+        config_1.ConfigService])
+], AuthGuard);
+//# sourceMappingURL=auth.guard.js.map

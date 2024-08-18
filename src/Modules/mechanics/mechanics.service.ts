@@ -1,15 +1,15 @@
-import { Injectable, UseGuards } from '@nestjs/common';
-import { Mechanic, mechanicDocument } from './mechanics.schema';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
-import { UsersService } from '../users/users.service';
-import { UpdateMechanicDto } from './dto/update-mechanic.dto';
+import { Injectable, UseGuards } from "@nestjs/common";
+import { Mechanic, mechanicDocument } from "./mechanics.schema";
+import { Model } from "mongoose";
+import { InjectModel } from "@nestjs/mongoose";
+import { UsersService } from "../users/users.service";
+import { UpdateMechanicDto } from "./dto/update-mechanic.dto";
 
 @Injectable()
 export class MechanicsService {
   constructor(
     @InjectModel(Mechanic.name) private mechanicModel: Model<mechanicDocument>,
-    private usersService: UsersService,
+    private usersService: UsersService
   ) {}
 
   async create(user): Promise<Mechanic> {
@@ -25,8 +25,7 @@ export class MechanicsService {
   //   return `This action returns a #${id} mechanic`;
   // }
 
-  update(id: number, updateMechanicDto: UpdateMechanicDto) {
-    console.log(updateMechanicDto);
+  update(id: string, updateMechanicDto: UpdateMechanicDto) {
     return `This action updates a #${id} mechanic`;
   }
 

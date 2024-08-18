@@ -16,21 +16,20 @@ exports.MechanicsController = void 0;
 const common_1 = require("@nestjs/common");
 const mechanics_service_1 = require("./mechanics.service");
 const update_mechanic_dto_1 = require("./dto/update-mechanic.dto");
+const auth_guard_1 = require("../auth/auth.guard");
 let MechanicsController = class MechanicsController {
     constructor(mechanicsService) {
         this.mechanicsService = mechanicsService;
     }
     async update(id, updateMechanicDto, req) {
         const user = req.user;
-        if (user.userType !== "admin" && "rating" in updateMechanicDto) {
-            throw new common_1.ForbiddenException();
-        }
-        const updatedMechanic = await this.mechanicsService.update(+id, updateMechanicDto);
+        const updatedMechanic = await this.mechanicsService.update(id, updateMechanicDto);
         return { message: "Mechanic updated successfully", data: updatedMechanic };
     }
 };
 exports.MechanicsController = MechanicsController;
 __decorate([
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Patch)(":id"),
     __param(0, (0, common_1.Param)("id")),
     __param(1, (0, common_1.Body)()),

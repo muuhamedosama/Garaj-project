@@ -7,8 +7,6 @@ import { AuthModule } from './Modules/auth/auth.module';
 import { MechanicsModule } from './Modules/mechanics/mechanics.module';
 import { RequestsModule } from './Modules/requests/requests.module';
 import { ServicesModule } from './Modules/services/services.module';
-import { RolesGuard } from './roles/roles.guard';
-import { JwtAuthGuard } from './Modules/auth/jwt-auth.guard';
 
 @Module({
   imports: [

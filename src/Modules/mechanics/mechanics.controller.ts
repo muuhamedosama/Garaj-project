@@ -12,7 +12,7 @@ import {
 } from "@nestjs/common";
 import { MechanicsService } from "./mechanics.service";
 import { UpdateMechanicDto } from "./dto/update-mechanic.dto";
-import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { AuthGuard } from "../auth/auth.guard";
 
 @Controller("mechanics")
 export class MechanicsController {
@@ -33,6 +33,7 @@ export class MechanicsController {
   //   return this.mechanicsService.findOne(+id);
   // }
 
+  @UseGuards(AuthGuard)
   @Patch(":id")
   async update(
     @Param("id") id: string,
@@ -40,12 +41,11 @@ export class MechanicsController {
     @Request() req: any
   ) {
     const user = req.user;
-
-    if (user.userType !== "admin" && "rating" in updateMechanicDto) {
-      throw new ForbiddenException();
-    }
+    // if (user.userType !== "admin" && "rating" in updateMechanicDto) {
+    //   throw new ForbiddenException();
+    // }
     const updatedMechanic = await this.mechanicsService.update(
-      +id,
+      id,
       updateMechanicDto
     );
 

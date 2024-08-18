@@ -28,7 +28,6 @@ let MechanicsService = class MechanicsService {
         return createdUser.save();
     }
     update(id, updateMechanicDto) {
-        console.log(updateMechanicDto);
         return `This action updates a #${id} mechanic`;
     }
 };
