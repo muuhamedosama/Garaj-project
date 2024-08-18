@@ -1,4 +1,5 @@
 export declare enum UserType {
-    Customer = 0,
-    ServiceProvider = 1
+    admin = 0,
+    Customer = 1,
+    ServiceProvider = 2
 }
