@@ -5,13 +5,11 @@ import { JwtModule } from "@nestjs/jwt";
 
 import { AuthService } from "./auth.service";
 import { AuthController } from "./auth.controller";
-import { UsersModule } from "../users/users.module";
-import { MechanicsModule } from "../mechanics/mechanics.module";
+import { UsersModule } from "../customers/users.module";
 
 @Module({
   imports: [
     UsersModule,
-    MechanicsModule,
     PassportModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
@@ -25,6 +23,6 @@ import { MechanicsModule } from "../mechanics/mechanics.module";
   ],
   controllers: [AuthController],
   providers: [AuthService],
-  exports:[]
+  exports: [],
 })
 export class AuthModule {}

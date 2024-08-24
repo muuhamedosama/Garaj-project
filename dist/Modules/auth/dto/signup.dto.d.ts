@@ -1,5 +1,4 @@
-import { UserType } from "../../../types/enums";
-
+import { UserType } from 'src/types/enums';
 export declare class SignUpDto {
     phone: string;
     email: string;

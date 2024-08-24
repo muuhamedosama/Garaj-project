@@ -10,9 +10,8 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const config_1 = require("@nestjs/config");
-const users_module_1 = require("./Modules/users/users.module");
+const users_module_1 = require("./Modules/customers/users.module");
 const auth_module_1 = require("./Modules/auth/auth.module");
-const mechanics_module_1 = require("./Modules/mechanics/mechanics.module");
 const requests_module_1 = require("./Modules/requests/requests.module");
 const services_module_1 = require("./Modules/services/services.module");
 let AppModule = class AppModule {
@@ -26,12 +25,11 @@ exports.AppModule = AppModule = __decorate([
                 imports: [config_1.ConfigModule],
                 inject: [config_1.ConfigService],
                 useFactory: async (config) => ({
-                    uri: config.get('MONGODB_URI'),
+                    uri: config.get("MONGODB_URI"),
                     ssl: true,
                 }),
             }),
             users_module_1.UsersModule,
-            mechanics_module_1.MechanicsModule,
             auth_module_1.AuthModule,
             requests_module_1.RequestsModule,
             services_module_1.ServicesModule,

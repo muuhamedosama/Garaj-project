@@ -13,17 +13,16 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const bcrypt = require("bcryptjs");
-const users_service_1 = require("../users/users.service");
+const users_service_1 = require("../customers/users.service");
 const enums_1 = require("../../types/enums");
-const mechanics_service_1 = require("../mechanics/mechanics.service");
 let AuthService = class AuthService {
-    constructor(usersService, mechanicService, jwtService) {
+    constructor(usersService, jwtService) {
         this.usersService = usersService;
-        this.mechanicService = mechanicService;
         this.jwtService = jwtService;
     }
     async validateUserForLogin(phone, password) {
-        const user = await this.usersService.findOneByContact(phone);
+        let user;
+        user = await this.usersService.findOneByContact(phone);
         try {
             if (user && (await bcrypt.compare(password, user.password))) {
                 return user;
@@ -41,11 +40,13 @@ let AuthService = class AuthService {
     async login(user) {
         const payload = {
             phone: user.phone,
-            UserType: user.userType,
+            userType: user.userType,
             sub: user._id,
         };
         try {
             return {
+                id: user._id,
+                name: user.name,
                 access_token: this.jwtService.sign(payload),
             };
         }
@@ -54,19 +55,18 @@ let AuthService = class AuthService {
         }
     }
     async signup(user) {
-        const createdUser = await this.usersService.create(user);
-        if (user.userType == enums_1.UserType.ServiceProvider) {
-            await this.mechanicService.create({
-                userId: createdUser._id,
-                ...user,
-            });
+        if (user.userType == enums_1.UserType.admin) {
+            throw new common_1.ForbiddenException();
         }
+        const createdUser = await this.usersService.create(user);
         const payload = {
             phone: user.phone,
-            UserType: user.userType,
+            userType: user.userType,
             sub: user._id,
         };
         return {
+            id: createdUser._id,
+            name: createdUser.name,
             access_token: this.jwtService.sign(payload),
         };
     }
@@ -75,7 +75,6 @@ exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [users_service_1.UsersService,
-        mechanics_service_1.MechanicsService,
         jwt_1.JwtService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

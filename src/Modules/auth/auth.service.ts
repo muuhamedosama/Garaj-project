@@ -1,23 +1,24 @@
 import {
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
-} from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcryptjs';
-import { UsersService } from '../users/users.service';
-import { UserType } from 'src/types/enums';
-import { MechanicsService } from '../mechanics/mechanics.service';
+} from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import * as bcrypt from "bcryptjs";
+import { UsersService } from "../customers/users.service";
+import { UserType } from "src/types/enums";
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
-    private mechanicService: MechanicsService,
-    private jwtService: JwtService,
+    private jwtService: JwtService
   ) {}
 
   async validateUserForLogin(phone: string, password?: string) {
-    const user = await this.usersService.findOneByContact(phone);
+    let user;
+    user = await this.usersService.findOneByContact(phone);
+
     try {
       if (user && (await bcrypt.compare(password, user.password))) {
         return user;
@@ -36,11 +37,13 @@ export class AuthService {
   async login(user: any) {
     const payload = {
       phone: user.phone,
-      UserType: user.userType,
+      userType: user.userType,
       sub: user._id,
     };
     try {
       return {
+        id: user._id,
+        name: user.name,
         access_token: this.jwtService.sign(payload),
       };
     } catch (error) {
@@ -49,20 +52,19 @@ export class AuthService {
   }
 
   async signup(user: any) {
-    const createdUser = await this.usersService.create(user);
-    if (user.userType == UserType.ServiceProvider) {
-      await this.mechanicService.create({
-        userId: createdUser._id,
-        ...user,
-      });
+    if (user.userType == UserType.admin) {
+      throw new ForbiddenException();
     }
+    const createdUser = await this.usersService.create(user);
 
     const payload = {
       phone: user.phone,
-      UserType: user.userType,
+      userType: user.userType,
       sub: user._id,
     };
     return {
+      id: createdUser._id,
+      name: createdUser.name,
       access_token: this.jwtService.sign(payload),
     };
   }

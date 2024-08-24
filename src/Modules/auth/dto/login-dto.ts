@@ -1,4 +1,5 @@
-import { IsString } from "class-validator";
+import { IsEnum, IsString } from "class-validator";
+import { UserType } from "src/types/enums";
 
 export class LoginDto {
   @IsString()
@@ -6,4 +7,7 @@ export class LoginDto {
 
   @IsString()
   password: string;
+
+  @IsEnum(UserType)
+  userType: UserType;
 }
