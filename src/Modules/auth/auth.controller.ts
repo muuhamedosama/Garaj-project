@@ -16,11 +16,12 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')
-  async login(@Body() loginDto: LoginDto) {
+  async login(@Body() loginDto: any) {
     const user = await this.authService.validateUserForLogin(
       loginDto.phone,
       loginDto.password,
     );
+    
     if (user) {
       return this.authService.login(user);
     }

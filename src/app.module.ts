@@ -2,10 +2,13 @@ import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 
-import { UsersModule } from "./Modules/customers/users.module";
+import { UsersModule } from "./Modules/users/users.module";
 import { AuthModule } from "./Modules/auth/auth.module";
-import { RequestsModule } from "./Modules/requests/requests.module";
 import { ServicesModule } from "./Modules/services/services.module";
+import { VehiclesModule } from "./Modules/vehicles/vehicles.module";
+import { RecordsModule } from './Modules/records/records.module';
+import { BookingsModule } from './Modules/bookings/bookings.module';
+import { ReviewsModule } from './Modules/reviews/reviews.module';
 
 @Module({
   imports: [
@@ -20,8 +23,11 @@ import { ServicesModule } from "./Modules/services/services.module";
     }),
     UsersModule,
     AuthModule,
-    RequestsModule,
     ServicesModule,
+    VehiclesModule,
+    RecordsModule,
+    BookingsModule,
+    ReviewsModule,
   ],
   controllers: [],
   providers: [],

@@ -5,7 +5,7 @@ import {
 } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcryptjs";
-import { UsersService } from "../customers/users.service";
+import { UsersService } from "../users/users.service";
 import { UserType } from "src/types/enums";
 
 @Injectable()
@@ -16,8 +16,7 @@ export class AuthService {
   ) {}
 
   async validateUserForLogin(phone: string, password?: string) {
-    let user;
-    user = await this.usersService.findOneByContact(phone);
+    const user = await this.usersService.findOneByContact(phone);
 
     try {
       if (user && (await bcrypt.compare(password, user.password))) {

@@ -3,3 +3,8 @@ export enum UserType {
   Customer = 1,
   ServiceProvider = 2,
 }
+
+export enum BookingStatus {
+  Pending = "pending",
+  Completed = "completed",
+}
