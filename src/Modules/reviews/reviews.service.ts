@@ -35,6 +35,7 @@ export class ReviewsService {
     const avgRating =
       reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
 
+    // update
     await this.userModel.findByIdAndUpdate(
       { _id: providerId },
       { rating: avgRating }
@@ -46,5 +47,4 @@ export class ReviewsService {
   async getReviewsByProvider(providerId: string): Promise<Review[]> {
     return this.reviewModel.find({ providerId }).exec();
   }
-
 }

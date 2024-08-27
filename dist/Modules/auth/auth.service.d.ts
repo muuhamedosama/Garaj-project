@@ -14,6 +14,7 @@ export declare class AuthService {
     signup(user: any): Promise<{
         id: any;
         name: string;
+        UserType: number;
         access_token: string;
     }>;
 }

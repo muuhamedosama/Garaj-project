@@ -62,10 +62,17 @@ let VehiclesService = class VehiclesService {
         }
         return updatedVehicle;
     }
-    async delete(id) {
+    async delete(id, userId) {
+        const vehicle = await this.vehicleModel.findById(id).exec();
+        if (!vehicle) {
+            throw new common_1.NotFoundException("Vehicle not found");
+        }
+        if (vehicle.userId.toString() !== userId) {
+            throw new common_1.ForbiddenException("You are not allowed to delete this vehicle");
+        }
         const result = await this.vehicleModel.deleteOne({ _id: id }).exec();
         if (result.deletedCount === 0) {
-            throw new common_1.NotFoundException();
+            throw new common_1.NotFoundException("Vehicle not found");
         }
     }
 };

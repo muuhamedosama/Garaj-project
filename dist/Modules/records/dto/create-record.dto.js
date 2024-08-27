@@ -21,6 +21,10 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsMongoId)(),
     __metadata("design:type", String)
+], CreateRecordDto.prototype, "bookingId", void 0);
+__decorate([
+    (0, class_validator_1.IsMongoId)(),
+    __metadata("design:type", String)
 ], CreateRecordDto.prototype, "providerId", void 0);
 __decorate([
     (0, class_validator_1.IsArray)(),

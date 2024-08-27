@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
@@ -72,11 +73,21 @@ export class VehiclesService {
     return updatedVehicle;
   }
 
-  async delete(id: string): Promise<void> {
-    const result = await this.vehicleModel.deleteOne({ _id: id }).exec();
+  async delete(id: string, userId: string): Promise<void> {
+    const vehicle = await this.vehicleModel.findById(id).exec();
+    if (!vehicle) {
+      throw new NotFoundException("Vehicle not found");
+    }
 
+    if (vehicle.userId.toString() !== userId) {
+      throw new ForbiddenException(
+        "You are not allowed to delete this vehicle"
+      );
+    }
+
+    const result = await this.vehicleModel.deleteOne({ _id: id }).exec();
     if (result.deletedCount === 0) {
-      throw new NotFoundException();
+      throw new NotFoundException("Vehicle not found");
     }
   }
 }

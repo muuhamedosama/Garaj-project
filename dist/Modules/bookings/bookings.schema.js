@@ -33,6 +33,10 @@ __decorate([
     __metadata("design:type", mongoose_2.Types.ObjectId)
 ], Booking.prototype, "vehicleId", void 0);
 __decorate([
+    (0, mongoose_1.Prop)({ default: 0 }),
+    __metadata("design:type", Number)
+], Booking.prototype, "price", void 0);
+__decorate([
     (0, mongoose_1.Prop)({
         type: String,
         enum: enums_1.BookingStatus,

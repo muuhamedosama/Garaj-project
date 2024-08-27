@@ -24,6 +24,10 @@ __decorate([
     __metadata("design:type", mongoose_2.Types.ObjectId)
 ], Record.prototype, "providerId", void 0);
 __decorate([
+    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "User", required: true }),
+    __metadata("design:type", mongoose_2.Types.ObjectId)
+], Record.prototype, "bookingId", void 0);
+__decorate([
     (0, mongoose_1.Prop)({ type: [mongoose_2.Types.ObjectId], ref: "Service", required: true }),
     __metadata("design:type", Array)
 ], Record.prototype, "services", void 0);
@@ -35,6 +39,10 @@ __decorate([
     (0, mongoose_1.Prop)({ type: [String], default: [] }),
     __metadata("design:type", Array)
 ], Record.prototype, "partsInstalled", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ default: false }),
+    __metadata("design:type", Boolean)
+], Record.prototype, "approved", void 0);
 exports.Record = Record = __decorate([
     (0, mongoose_1.Schema)({ timestamps: true })
 ], Record);

@@ -40,11 +40,11 @@ let BookingsController = class BookingsController {
             throw new common_1.UnauthorizedException();
         return this.bookingsService.findByProviderId(providerId);
     }
-    updateStatus(id, status) {
-        return this.bookingsService.updateStatus(id, status);
-    }
-    remove(id) {
-        return this.bookingsService.delete(id);
+    bookingCancellation(id, req) {
+        const { userType } = req.user;
+        if (userType === enums_1.UserType.ServiceProvider)
+            throw new common_1.UnauthorizedException();
+        return this.bookingsService.bookingCancellation(id);
     }
 };
 exports.BookingsController = BookingsController;
@@ -79,20 +79,13 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], BookingsController.prototype, "findByProviderId", null);
 __decorate([
-    (0, common_1.Patch)(":id/status"),
+    (0, common_1.Patch)(":id/cancel"),
     __param(0, (0, common_1.Param)("id")),
-    __param(1, (0, common_1.Body)("status")),
+    __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
-], BookingsController.prototype, "updateStatus", null);
-__decorate([
-    (0, common_1.Delete)(":id"),
-    __param(0, (0, common_1.Param)("id")),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], BookingsController.prototype, "remove", null);
+], BookingsController.prototype, "bookingCancellation", null);
 exports.BookingsController = BookingsController = __decorate([
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Controller)("bookings"),

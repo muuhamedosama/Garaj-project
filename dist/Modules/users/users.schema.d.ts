@@ -15,6 +15,8 @@ export declare class User {
     amenities: string[];
     specialization: string[];
     rating: number;
+    revenue: number;
+    totalBookings: number;
     services: {
         serviceRef: Types.ObjectId;
         price: Number;

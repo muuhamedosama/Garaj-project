@@ -1,6 +1,5 @@
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 import { CreateBookingDto } from "./dto/create-booking.dto";
-import { BookingStatus } from "src/types/enums";
 import { Booking, BookingDocument } from "./bookings.schema";
 export declare class BookingsService {
     private readonly bookingModel;
@@ -9,6 +8,13 @@ export declare class BookingsService {
     findById(id: string): Promise<Booking>;
     findByUserId(userId: string): Promise<Booking[]>;
     findByProviderId(providerId: string): Promise<Booking[]>;
-    updateStatus(id: string, status: BookingStatus): Promise<Booking>;
+    updateStatusAndPrice(id: Types.ObjectId, updateBookingDto: any): Promise<Booking>;
+    bookingCancellation(id: string): Promise<import("mongoose").Document<unknown, {}, import("mongoose").Document<unknown, {}, Booking> & Booking & {
+        _id: Types.ObjectId;
+    }> & import("mongoose").Document<unknown, {}, Booking> & Booking & {
+        _id: Types.ObjectId;
+    } & Required<{
+        _id: Types.ObjectId;
+    }>>;
     delete(id: string): Promise<void>;
 }

@@ -18,6 +18,9 @@ export class Booking {
   @Prop({ type: Types.ObjectId, ref: "Vehicle", required: true })
   vehicleId: Types.ObjectId;
 
+  @Prop({ default: 0 })
+  price: number;
+
   @Prop({
     type: String,
     enum: BookingStatus,

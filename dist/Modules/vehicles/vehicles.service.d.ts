@@ -17,5 +17,5 @@ export declare class VehiclesService {
     }> & import("mongoose").Document<unknown, {}, Vehicle> & Vehicle & {
         _id: import("mongoose").Types.ObjectId;
     }>;
-    delete(id: string): Promise<void>;
+    delete(id: string, userId: string): Promise<void>;
 }

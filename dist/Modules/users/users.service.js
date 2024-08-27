@@ -28,10 +28,16 @@ let UsersService = class UsersService {
         const createdUser = new this.userModel({
             ...user,
             password: hashedPassword,
+            rating: 0,
+            revenue: 0,
+            totalBookings: 0,
         });
         return createdUser.save();
     }
     async update(id, updateUserDto) {
+        if (updateUserDto.hasOwnProperty("rating")) {
+            throw new common_1.ForbiddenException("You are not allowed to update the rating");
+        }
         const updatedUser = await this.userModel.findByIdAndUpdate(id, updateUserDto, {
             new: true,
             runValidators: true,
@@ -40,6 +46,14 @@ let UsersService = class UsersService {
             throw new common_1.NotFoundException();
         }
         return updatedUser;
+    }
+    async updateRevenueAndPrice(providerId, bill) {
+        await this.userModel.findByIdAndUpdate(providerId, {
+            $inc: {
+                revenue: bill,
+                totalBookings: 1,
+            },
+        }, { new: true });
     }
     async findOneByContact(phone) {
         return this.userModel.findOne({ phone }).exec();

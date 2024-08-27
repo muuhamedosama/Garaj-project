@@ -5,5 +5,6 @@ export declare enum UserType {
 }
 export declare enum BookingStatus {
     Pending = "pending",
-    Completed = "completed"
+    Completed = "completed",
+    Canceled = "canceled"
 }

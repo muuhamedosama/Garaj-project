@@ -16,6 +16,7 @@ exports.BookingsService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
+const enums_1 = require("../../types/enums");
 const bookings_schema_1 = require("./bookings.schema");
 let BookingsService = class BookingsService {
     constructor(bookingModel) {
@@ -38,9 +39,21 @@ let BookingsService = class BookingsService {
     async findByProviderId(providerId) {
         return await this.bookingModel.find({ providerId }).exec();
     }
-    async updateStatus(id, status) {
+    async updateStatusAndPrice(id, updateBookingDto) {
         const updatedBooking = await this.bookingModel
-            .findByIdAndUpdate(id, { status }, { new: true, runValidators: true })
+            .findByIdAndUpdate(id, updateBookingDto, {
+            new: true,
+            runValidators: true,
+        })
+            .exec();
+        if (!updatedBooking) {
+            throw new common_1.NotFoundException(`Booking with ID ${id} not found`);
+        }
+        return updatedBooking;
+    }
+    async bookingCancellation(id) {
+        const updatedBooking = await this.bookingModel
+            .findByIdAndUpdate(id, { status: enums_1.BookingStatus.Canceled }, { new: true, runValidators: true })
             .exec();
         if (!updatedBooking) {
             throw new common_1.NotFoundException(`Booking with ID ${id} not found`);

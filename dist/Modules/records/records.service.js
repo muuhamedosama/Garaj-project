@@ -17,13 +17,18 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const records_schema_1 = require("./records.schema");
+const bookings_service_1 = require("../bookings/bookings.service");
+const users_service_1 = require("../users/users.service");
+const enums_1 = require("../../types/enums");
 let RecordsService = class RecordsService {
-    constructor(recordModel) {
+    constructor(recordModel, bookingService, userService) {
         this.recordModel = recordModel;
+        this.bookingService = bookingService;
+        this.userService = userService;
     }
     async create(createRecordDto) {
         const createdRecord = new this.recordModel(createRecordDto);
-        return createdRecord.save();
+        return await createdRecord.save();
     }
     async findByVehicleId(vehicleId) {
         return await this.recordModel.find({ vehicleId }).exec();
@@ -35,13 +40,19 @@ let RecordsService = class RecordsService {
         }
         return records;
     }
-    async update(id, updateRecordDto) {
+    async update(id) {
         const updatedRecord = await this.recordModel
-            .findByIdAndUpdate(id, updateRecordDto, { new: true })
+            .findByIdAndUpdate(id, { approved: true }, { new: true })
             .exec();
         if (!updatedRecord) {
             throw new common_1.NotFoundException("Record not found");
         }
+        const { providerId, bill, bookingId } = updatedRecord;
+        await this.userService.updateRevenueAndPrice(providerId, bill);
+        await this.bookingService.updateStatusAndPrice(bookingId, {
+            status: enums_1.BookingStatus.Completed,
+            price: bill,
+        });
         return updatedRecord;
     }
     async remove(id) {
@@ -56,6 +67,8 @@ exports.RecordsService = RecordsService;
 exports.RecordsService = RecordsService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(records_schema_1.Record.name)),
-    __metadata("design:paramtypes", [mongoose_2.Model])
+    __metadata("design:paramtypes", [mongoose_2.Model,
+        bookings_service_1.BookingsService,
+        users_service_1.UsersService])
 ], RecordsService);
 //# sourceMappingURL=records.service.js.map

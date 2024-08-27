@@ -6,6 +6,7 @@ export declare class Booking {
     providerId: Types.ObjectId;
     services: Types.ObjectId[];
     vehicleId: Types.ObjectId;
+    price: number;
     status: BookingStatus;
 }
 export declare const BookingSchema: import("mongoose").Schema<Booking, import("mongoose").Model<Booking, any, any, any, import("mongoose").Document<unknown, any, Booking> & Booking & {

@@ -17,5 +17,5 @@ export declare class VehiclesController {
     }> & import("mongoose").Document<unknown, {}, import("./vehicles.schema").Vehicle> & import("./vehicles.schema").Vehicle & {
         _id: import("mongoose").Types.ObjectId;
     }>;
-    remove(id: string, req: any): Promise<void>;
+    remove(vehicleId: string, req: any): Promise<void>;
 }

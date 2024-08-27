@@ -1,22 +1,24 @@
-import {
-  Injectable,
-  NotFoundException,
-} from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model, Types } from "mongoose";
+import { Model } from "mongoose";
 import { CreateRecordDto } from "./dto/create-record.dto";
 import { UpdateRecordDto } from "./dto/update-record.dto";
 import { Record, RecordDocument } from "./records.schema";
+import { BookingsService } from "../bookings/bookings.service";
+import { UsersService } from "../users/users.service";
+import { BookingStatus } from "src/types/enums";
 @Injectable()
 export class RecordsService {
   constructor(
     @InjectModel(Record.name)
-    private readonly recordModel: Model<RecordDocument>
+    private readonly recordModel: Model<RecordDocument>,
+    private readonly bookingService: BookingsService,
+    private readonly userService: UsersService
   ) {}
 
   async create(createRecordDto: CreateRecordDto): Promise<Record> {
     const createdRecord = new this.recordModel(createRecordDto);
-    return createdRecord.save();
+    return await createdRecord.save();
   }
 
   async findByVehicleId(vehicleId: string): Promise<Record[]> {
@@ -31,13 +33,20 @@ export class RecordsService {
     return records;
   }
 
-  async update(id: string, updateRecordDto: UpdateRecordDto): Promise<Record> {
+  async update(id: string): Promise<Record> {
+    //add session
     const updatedRecord = await this.recordModel
-      .findByIdAndUpdate(id, updateRecordDto, { new: true })
+      .findByIdAndUpdate(id, { approved: true }, { new: true })
       .exec();
     if (!updatedRecord) {
       throw new NotFoundException("Record not found");
     }
+    const {providerId, bill, bookingId} = updatedRecord;
+    await this.userService.updateRevenueAndPrice(providerId, bill);
+    await this.bookingService.updateStatusAndPrice(bookingId, {
+      status: BookingStatus.Completed,
+      price: bill,
+    });
     return updatedRecord;
   }
 

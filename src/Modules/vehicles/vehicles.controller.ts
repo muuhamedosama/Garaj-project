@@ -51,13 +51,14 @@ export class VehiclesController {
     @Request() req
   ) {
     this.checkUserType(req.user.userType);
-    
+
     return this.vehiclesService.update(id, updateVehicleDto);
   }
 
   @Delete(":id")
-  remove(@Param("id") id: string, @Request() req) {
-    this.checkUserType(req.user.userType);
-    return this.vehiclesService.delete(id);
+  remove(@Param("id") vehicleId: string, @Request() req) {
+    const { userType, sub } = req.user;
+    this.checkUserType(userType);
+    return this.vehiclesService.delete(vehicleId, sub);
   }
 }

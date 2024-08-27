@@ -43,9 +43,10 @@ let VehiclesController = class VehiclesController {
         this.checkUserType(req.user.userType);
         return this.vehiclesService.update(id, updateVehicleDto);
     }
-    remove(id, req) {
-        this.checkUserType(req.user.userType);
-        return this.vehiclesService.delete(id);
+    remove(vehicleId, req) {
+        const { userType, sub } = req.user;
+        this.checkUserType(userType);
+        return this.vehiclesService.delete(vehicleId, sub);
     }
 };
 exports.VehiclesController = VehiclesController;

@@ -11,6 +11,7 @@ export declare class AuthController {
     signup(signUpDto: SignUpDto): Promise<{
         id: any;
         name: string;
+        UserType: number;
         access_token: string;
     }>;
 }

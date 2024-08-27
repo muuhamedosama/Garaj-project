@@ -15,9 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RecordsController = void 0;
 const common_1 = require("@nestjs/common");
 const records_service_1 = require("./records.service");
-const update_record_dto_1 = require("./dto/update-record.dto");
 const auth_guard_1 = require("../auth/auth.guard");
 const create_record_dto_1 = require("./dto/create-record.dto");
+const enums_1 = require("../../types/enums");
 let RecordsController = class RecordsController {
     constructor(recordsService) {
         this.recordsService = recordsService;
@@ -31,8 +31,11 @@ let RecordsController = class RecordsController {
     findByProviderId(providerId) {
         return this.recordsService.findByProviderId(providerId);
     }
-    async update(id, updateRecordDto) {
-        return this.recordsService.update(id, updateRecordDto);
+    async update(id, req) {
+        const { userType } = req.user;
+        if (userType === enums_1.UserType.ServiceProvider)
+            throw new common_1.UnauthorizedException();
+        return this.recordsService.update(id);
     }
     remove(id) {
         return this.recordsService.remove(id);
@@ -63,9 +66,9 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(":id"),
     __param(0, (0, common_1.Param)("id")),
-    __param(1, (0, common_1.Body)()),
+    __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_record_dto_1.UpdateRecordDto]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], RecordsController.prototype, "update", null);
 __decorate([

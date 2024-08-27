@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { Model, ObjectId, Types } from "mongoose";
 import { CreateBookingDto } from "./dto/create-booking.dto";
 import { BookingStatus } from "src/types/enums";
 import { Booking, BookingDocument } from "./bookings.schema";
@@ -32,9 +32,31 @@ export class BookingsService {
   async findByProviderId(providerId: string): Promise<Booking[]> {
     return await this.bookingModel.find({ providerId }).exec();
   }
-  async updateStatus(id: string, status: BookingStatus): Promise<Booking> {
+  async updateStatusAndPrice(
+    id: Types.ObjectId,
+    updateBookingDto: any
+  ): Promise<Booking> {
     const updatedBooking = await this.bookingModel
-      .findByIdAndUpdate(id, { status }, { new: true, runValidators: true })
+      .findByIdAndUpdate(id, updateBookingDto, {
+        new: true,
+        runValidators: true,
+      })
+      .exec();
+
+    if (!updatedBooking) {
+      throw new NotFoundException(`Booking with ID ${id} not found`);
+    }
+
+    return updatedBooking;
+  }
+
+  async bookingCancellation(id: string) {
+    const updatedBooking = await this.bookingModel
+      .findByIdAndUpdate(
+        id,
+        { status: BookingStatus.Canceled },
+        { new: true, runValidators: true }
+      )
       .exec();
 
     if (!updatedBooking) {

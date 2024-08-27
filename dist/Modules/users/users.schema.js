@@ -128,6 +128,14 @@ __decorate([
     __metadata("design:type", Number)
 ], User.prototype, "rating", void 0);
 __decorate([
+    (0, mongoose_1.Prop)({ default: 0 }),
+    __metadata("design:type", Number)
+], User.prototype, "revenue", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ default: 0 }),
+    __metadata("design:type", Number)
+], User.prototype, "totalBookings", void 0);
+__decorate([
     (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "Service" }),
     __metadata("design:type", Array)
 ], User.prototype, "services", void 0);

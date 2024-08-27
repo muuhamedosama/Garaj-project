@@ -106,6 +106,12 @@ export class User {
   @Prop({ default: 0 })
   rating: number;
 
+  @Prop({ default: 0 })
+  revenue: number;
+
+  @Prop({ default: 0 })
+  totalBookings: number;
+
   @Prop({ type: Types.ObjectId, ref: "Service" })
   services: { serviceRef: Types.ObjectId; price: Number }[];
 

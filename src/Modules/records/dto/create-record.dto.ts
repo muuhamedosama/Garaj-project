@@ -5,6 +5,9 @@ export class CreateRecordDto {
   vehicleId?: string;
 
   @IsMongoId()
+  bookingId: string;
+
+  @IsMongoId()
   providerId: string;
 
   @IsArray()

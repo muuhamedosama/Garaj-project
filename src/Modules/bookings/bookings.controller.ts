@@ -13,7 +13,7 @@ import {
 import { BookingsService } from "./bookings.service";
 import { CreateBookingDto } from "./dto/create-booking.dto";
 import { AuthGuard } from "../auth/auth.guard";
-import { BookingStatus, UserType } from "src/types/enums";
+import { UserType } from "src/types/enums";
 
 @UseGuards(AuthGuard)
 @Controller("bookings")
@@ -45,13 +45,16 @@ export class BookingsController {
     return this.bookingsService.findByProviderId(providerId);
   }
 
-  @Patch(":id/status")
-  updateStatus(@Param("id") id: string, @Body("status") status: BookingStatus) {
-    return this.bookingsService.updateStatus(id, status);
+  @Patch(":id/cancel")
+  bookingCancellation(@Param("id") id: string,  @Request() req) {
+    const { userType } = req.user;
+    if (userType === UserType.ServiceProvider)
+      throw new UnauthorizedException();
+    return this.bookingsService.bookingCancellation(id);
   }
 
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.bookingsService.delete(id);
-  }
+  // @Delete(":id")
+  // remove(@Param("id") id: string) {
+  //   return this.bookingsService.delete(id);
+  // }
 }

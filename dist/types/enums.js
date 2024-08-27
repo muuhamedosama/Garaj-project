@@ -11,5 +11,6 @@ var BookingStatus;
 (function (BookingStatus) {
     BookingStatus["Pending"] = "pending";
     BookingStatus["Completed"] = "completed";
+    BookingStatus["Canceled"] = "canceled";
 })(BookingStatus || (exports.BookingStatus = BookingStatus = {}));
 //# sourceMappingURL=enums.js.map

@@ -7,11 +7,14 @@ import {
   Body,
   Param,
   UseGuards,
+  Request,
+  UnauthorizedException,
 } from "@nestjs/common";
 import { RecordsService } from "./records.service";
 import { UpdateRecordDto } from "./dto/update-record.dto";
 import { AuthGuard } from "../auth/auth.guard";
 import { CreateRecordDto } from "./dto/create-record.dto";
+import { UserType } from "src/types/enums";
 
 @UseGuards(AuthGuard)
 @Controller("records")
@@ -28,6 +31,7 @@ export class RecordsController {
     return this.recordsService.findByVehicleId(vehicleId);
   }
 
+  //commented
   @Get("user/:providerId")
   findByProviderId(@Param("providerId") providerId: string) {
     return this.recordsService.findByProviderId(providerId);
@@ -36,9 +40,12 @@ export class RecordsController {
   @Patch(":id")
   async update(
     @Param("id") id: string,
-    @Body() updateRecordDto: UpdateRecordDto
+    @Request() req
   ) {
-    return this.recordsService.update(id, updateRecordDto);
+    const { userType } = req.user;
+    if (userType === UserType.ServiceProvider)
+      throw new UnauthorizedException();
+    return this.recordsService.update(id);
   }
 
   @Delete(":id")

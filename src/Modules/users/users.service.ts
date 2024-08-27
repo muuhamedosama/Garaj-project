@@ -4,11 +4,12 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 import { User, UserDocument } from "./users.schema";
 import * as bcrypt from "bcryptjs";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { UserType } from "src/types/enums";
+import { CreateRecordDto } from "../records/dto/create-record.dto";
 
 @Injectable()
 export class UsersService {
@@ -19,11 +20,18 @@ export class UsersService {
     const createdUser = new this.userModel({
       ...user,
       password: hashedPassword,
+      rating: 0,
+      revenue: 0,
+      totalBookings: 0,
     });
     return createdUser.save();
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
+    if (updateUserDto.hasOwnProperty("rating")) {
+      throw new ForbiddenException("You are not allowed to update the rating");
+    }
+
     const updatedUser = await this.userModel.findByIdAndUpdate(
       id,
       updateUserDto,
@@ -38,6 +46,19 @@ export class UsersService {
     }
 
     return updatedUser;
+  }
+
+  async updateRevenueAndPrice(providerId: Types.ObjectId, bill: number) {
+    await this.userModel.findByIdAndUpdate(
+      providerId,
+      {
+        $inc: {
+          revenue: bill,
+          totalBookings: 1,
+        },
+      },
+      { new: true }
+    );
   }
 
   async findOneByContact(phone: string): Promise<User | undefined> {
