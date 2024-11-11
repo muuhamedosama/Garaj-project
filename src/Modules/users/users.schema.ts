@@ -17,6 +17,11 @@ export class User {
 
   @Prop({
     required: true,
+  })
+  password: string;
+
+  @Prop({
+    required: true,
     enum: UserType,
     validate: {
       validator: function (value: number) {
@@ -39,13 +44,6 @@ export class User {
     },
   })
   userType: number;
-
-  @Prop({
-    required: function () {
-      return this.userType === UserType.ServiceProvider;
-    },
-  })
-  password: string;
 
   @Prop({
     required: function () {
